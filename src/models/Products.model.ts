@@ -1,5 +1,5 @@
 import connection from './connection';
-import { AllProducts } from '../Interfaces/Products.interface';
+import { AllProducts } from '../interfaces/Products.interface';
 
 const productsQuery: any = {
   getAll: 'SELECT * FROM Trybesmith.Products',
