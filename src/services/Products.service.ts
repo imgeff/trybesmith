@@ -1,4 +1,4 @@
-import { AllProducts } from '../interfaces/Products.interface';
+import { AllProducts, NewProduct } from '../interfaces/Products.interface';
 import ProductsModel from '../models/Products.model';
 
 export default class ProductsService {
@@ -7,5 +7,10 @@ export default class ProductsService {
   public getAll = async (): Promise<AllProducts[]> => {
     const products = await this.model.getAll();
     return products;
+  };
+
+  public create = async (name: string, amount: string): Promise<NewProduct> => {
+    const newProduct = await this.model.create(name, amount);
+    return newProduct;
   };
 }
