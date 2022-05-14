@@ -1,3 +1,4 @@
+import { ResultSetHeader } from 'mysql2/promise';
 import connection from './connection';
 import { NewUser } from '../interfaces/users.interface';
 
@@ -6,7 +7,10 @@ const usersQuery = {
 };
 
 export default class UsersModel {
-  public create = async ({ username, classe, level, password }: NewUser): Promise<void> => {
-    await connection.execute(usersQuery.create, [username, classe, level, password]);
+  public create = async ({ username, classe, level, password }: NewUser): Promise<number> => {
+    const [rows] = await connection
+      .execute<ResultSetHeader>(usersQuery.create, [username, classe, level, password]);
+    const { insertId } = rows;
+    return insertId;
   };
 }
