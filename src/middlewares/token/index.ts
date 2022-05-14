@@ -1,6 +1,5 @@
 import jwt, { Algorithm } from 'jsonwebtoken';
-import { Response } from 'express';
-import { NewUserRequest } from '../../interfaces/users.interface';
+import { Request, Response } from 'express';
 
 interface IJwtConfig {
   algorithm: Algorithm;
@@ -13,12 +12,12 @@ const jwtConfig: IJwtConfig = {
 };
 
 export default class Token {
-  public generate = (req: NewUserRequest, res: Response): Response => {
-    const { code, userId } = req.user;
+  public generate = (req: Request, res: Response): Response => {
+    const { code, userId } = req.body;
     const payload = { id: userId };
     const secret = process.env.SECRET || 'Trybesmith*';
     const token = jwt.sign(payload, secret, jwtConfig);
-    
+
     return res.status(code).json({ token });
   };
 }
