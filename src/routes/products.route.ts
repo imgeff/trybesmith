@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ProductsController from '../controllers/Products.controller';
+import ProductsController from '../controllers/products.controller';
 import joiValidate from '../middlewares/joiValidate';
 import { products } from '../utils/joiSchemas';
 

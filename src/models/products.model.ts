@@ -1,6 +1,6 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import connection from './connection';
-import { AllProducts, NewProduct } from '../interfaces/Products.interface';
+import { AllProducts, NewProduct } from '../interfaces/products.interface';
 
 const productsQuery: any = {
   getAll: 'SELECT * FROM Trybesmith.Products',

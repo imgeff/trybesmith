@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import ProductsService from '../services/Products.service';
+import ProductsService from '../services/products.service';
 import 'express-async-errors';
 
 export default class ProductsController {
