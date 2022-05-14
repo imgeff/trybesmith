@@ -4,6 +4,7 @@ import { AllProducts, NewProduct } from '../interfaces/products.interface';
 
 const productsQuery: any = {
   getAll: 'SELECT * FROM Trybesmith.Products',
+  getByOrder: 'SELECT id FROM Trybesmith.Products WHERE orderId = ?',
   create: 'INSERT INTO Trybesmith.Products (name, amount) VALUES(?, ?)',
 };
 
@@ -17,5 +18,10 @@ export default class ProductsModel {
     const [rows] = await connection.execute<ResultSetHeader>(productsQuery.create, [name, amount]);
     const { insertId } = rows;
     return { id: insertId, name, amount };
+  };
+
+  public getByOrder = async (orderId: number) => {
+    const [productsIds] = await connection.execute(productsQuery.getByOrder, [orderId]);
+    return productsIds;
   };
 }
