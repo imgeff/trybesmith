@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import ProductsController from '../controllers/products.controller';
-import joiValidate from '../middlewares/joiValidate';
+import joiValidate from '../middlewares/validations/joiValidate';
 import { products } from '../utils/joiSchemas';
 
 const route = Router();
