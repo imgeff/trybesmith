@@ -1,5 +1,6 @@
 import jwt, { VerifyOptions, SignOptions } from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
+import { PayloadDecoded } from '../../interfaces/token.interface';
 
 const jwtConfig = {
   algorithm: 'HS256',
@@ -20,8 +21,9 @@ export default class Token {
     const { authorization } = req.headers;
     const { productsIds } = req.body;
     if (!authorization) return res.status(401).json({ message: 'Token not found' });
-    const decoded = jwt.verify(authorization, this.secret, jwtConfig as VerifyOptions) as any;
-    req.body = { id: decoded.id, productsIds };
+    const { userId } = jwt
+      .verify(authorization, this.secret, jwtConfig as VerifyOptions) as PayloadDecoded;
+    req.body = { userId, productsIds };
     return next();
   };
 }
