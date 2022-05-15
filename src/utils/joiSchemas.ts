@@ -12,4 +12,7 @@ export const users = Joi.object({
   password: Joi.string().min(8).required(),
 });
 
-export const orders = Joi.object({});
+export const login = Joi.object({
+  username: Joi.required(),
+  password: Joi.required(),
+});
