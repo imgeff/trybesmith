@@ -13,8 +13,7 @@ const jwtConfig: IJwtConfig = {
 
 export default class Token {
   public generate = (req: Request, res: Response): Response => {
-    const { code, userId } = req.body;
-    const payload = { id: userId };
+    const { code, payload } = req.body;
     const secret = process.env.SECRET || 'Trybesmith*';
     const token = jwt.sign(payload, secret, jwtConfig);
 

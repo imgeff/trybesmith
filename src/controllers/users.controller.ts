@@ -8,7 +8,7 @@ export default class UsersController {
   Promise<void | Response> => {
     const { username, classe, level, password } = req.body;
     const newUserId = await this.service.create({ username, classe, level, password });
-    req.body = { code: 201, userId: newUserId };
+    req.body = { code: 201, payload: { id: newUserId } };
     return next();
   };
 }

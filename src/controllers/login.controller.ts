@@ -11,7 +11,7 @@ export default class LoginController {
     if (searchUser.length === 0) {
       return res.status(401).json({ message: 'Username or password invalid' });
     }
-    req.body = { id: searchUser, username };
+    req.body = { code: 200, payload: { id: searchUser, username } };
     return next();
   };
 }
