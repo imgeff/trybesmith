@@ -1,11 +1,12 @@
-import { RowDataPacket } from 'mysql2/promise';
+import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import connection from './connection';
 import ProductsModel from './products.model';
-import { AllOrders } from '../interfaces/orders.interface';
+import { AllOrders, NewOrder } from '../interfaces/orders.interface';
 import { AllProducts } from '../interfaces/products.interface';
 
 const ordersQuery = {
   getAll: 'SELECT * FROM Trybesmith.Orders',
+  create: 'INSERT INTO Trybesmith.Orders (userId) VALUES(?);',
 };
 
 export default class OrdersModel {
@@ -24,5 +25,12 @@ export default class OrdersModel {
     });
 
     return orders as AllOrders[];
+  };
+
+  public create = async ({ userId, productsIds }: NewOrder): Promise<NewOrder> => {
+    const [rows] = await connection.execute<ResultSetHeader>(ordersQuery.create, [userId]);
+    const { insertId } = rows;
+    await this.productsModel.createById(productsIds, insertId);
+    return { userId, productsIds };
   };
 }
