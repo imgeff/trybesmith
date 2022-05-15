@@ -1,11 +1,12 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import connection from './connection';
-import { AllProducts, NewProduct } from '../interfaces/products.interface';
+import { AllProducts, NewProduct, ProductsQuery } from '../interfaces/products.interface';
 
-const productsQuery: any = {
-  getAll: 'SELECT * FROM Trybesmith.Products',
-  getByOrder: 'SELECT id FROM Trybesmith.Products WHERE orderId = ?',
-  create: 'INSERT INTO Trybesmith.Products (name, amount) VALUES(?, ?)',
+const productsQuery: ProductsQuery = {
+  getAll: 'SELECT * FROM Trybesmith.Products;',
+  getByOrder: 'SELECT id FROM Trybesmith.Products WHERE orderId = ?;',
+  create: 'INSERT INTO Trybesmith.Products (name, amount) VALUES(?, ?);',
+  createById: 'INSERT INTO Trybesmith.Products (name, amount, orderId) VALUES(?, ?, ?);',
 };
 
 export default class ProductsModel {
@@ -18,6 +19,18 @@ export default class ProductsModel {
     const [rows] = await connection.execute<ResultSetHeader>(productsQuery.create, [name, amount]);
     const { insertId } = rows;
     return { id: insertId, name, amount };
+  };
+
+  public createById = async (productsIds: number[], orderId: number) => {
+    const products = await this.getAll();
+    const productsByOrder = productsIds
+      .map((productId) => products
+        .filter((product) => product.id === productId))[0]; 
+
+    const createProductCall: unknown[] = productsByOrder.map((product) => connection
+      .execute(productsQuery.createById, [product.name, product.amount, orderId]));
+
+    Promise.all(createProductCall);
   };
 
   public getByOrder = async (orderId: number) => {
