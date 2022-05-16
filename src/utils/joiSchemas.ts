@@ -16,3 +16,8 @@ export const login = Joi.object({
   username: Joi.required(),
   password: Joi.required(),
 });
+
+export const orders = Joi.object({
+  userId: Joi.number(),
+  productsIds: Joi.array().min(1).required(),
+});
