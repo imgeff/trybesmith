@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from 'express';
+import Joi from 'joi';
 
-const joiValidate = (schema: any) => (req: Request, _res: Response, next: NextFunction) => {
+const joiValidate = (schema: Joi.Schema) => (req: Request, _res: Response, next: NextFunction) => {
   const { error } = schema.validate(req.body);
 
   if (error) {
