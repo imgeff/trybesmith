@@ -1,5 +1,5 @@
 import OrdersModel from '../models/orders.model';
-import { AllOrders, NewOrder, OrderCreated } from '../interfaces/orders.interface';
+import { AllOrders, NewOrder } from '../interfaces/orders.interface';
 
 export default class OrdersService {
   private model = new OrdersModel();
@@ -9,7 +9,7 @@ export default class OrdersService {
     return orders;
   };
 
-  public create = async (newOrder: NewOrder): Promise<OrderCreated> => {
+  public create = async (newOrder: NewOrder): Promise<NewOrder> => {
     const orderCreated = await this.model.create(newOrder);
     return orderCreated;
   };
