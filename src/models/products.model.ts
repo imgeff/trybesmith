@@ -24,15 +24,17 @@ export default class ProductsModel {
   public createById = async (productsIds: number[], orderId: number) => {
     const products = await this.getAll();
     const productsByOrder: AllProducts[] = [];
+
     productsIds
       .forEach((productId) => {
         const productByOrder = products.filter((product) => product.id === productId);
         productsByOrder.push(...productByOrder);
-      }); 
+      });
+
     const createProductCall: unknown[] = productsByOrder.map((product) => connection
       .execute(productsQuery.createById, [product.name, product.amount, orderId]));
 
-    Promise.all(createProductCall);
+    await Promise.all(createProductCall);
   };
 
   public getByOrder = async (orderId: number) => {
