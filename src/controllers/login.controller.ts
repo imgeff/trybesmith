@@ -8,10 +8,10 @@ export default class LoginController {
   Promise<Response | void> => {
     const { username, password } = req.body;
     const searchUser = await this.service.isUser(username, password);
-    if (searchUser.length === 0) {
+    if (!searchUser) {
       return res.status(401).json({ message: 'Username or password invalid' });
     }
-    req.body = { code: 200, payload: { id: searchUser, username } };
+    req.body = { code: 200, payload: { userId: searchUser, username } };
     return next();
   };
 }
