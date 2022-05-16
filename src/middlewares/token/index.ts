@@ -18,12 +18,17 @@ export default class Token {
   };
 
   public verify = (req: Request, res: Response, next: NextFunction): Response | void => {
-    const { authorization } = req.headers;
-    const { productsIds } = req.body;
-    if (!authorization) return res.status(401).json({ message: 'Token not found' });
-    const { userId } = jwt
-      .verify(authorization, this.secret, jwtConfig as VerifyOptions) as PayloadDecoded;
-    req.body = { userId, productsIds };
-    return next();
+    try {
+      const { authorization } = req.headers;
+      const { productsIds } = req.body;
+      if (!authorization) return res.status(401).json({ message: 'Token not found' });
+      const { userId } = jwt
+        .verify(authorization, this.secret, jwtConfig as VerifyOptions) as PayloadDecoded;
+      req.body = { userId, productsIds };
+      return next();
+    } catch (error) {
+      console.error(error);
+      return res.status(401).json({ message: 'Invalid token' });
+    }
   };
 }
