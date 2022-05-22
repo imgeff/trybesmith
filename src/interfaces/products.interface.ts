@@ -11,5 +11,5 @@ export interface AllProducts extends NewProduct {
 export interface ProductsQuery {
   getAll: string;
   create: string;
-  createById: string;
+  update: string;
 }

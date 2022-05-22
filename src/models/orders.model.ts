@@ -28,9 +28,25 @@ export default class OrdersModel {
   };
 
   public create = async ({ userId, productsIds }: NewOrder): Promise<NewOrder> => {
-    const [rows] = await connection.execute<ResultSetHeader>(ordersQuery.create, [userId]);
-    const { insertId } = rows;
-    await this.productsModel.createById(productsIds, insertId);
+    const [{ insertId }] = await connection.execute<ResultSetHeader>(ordersQuery.create, [userId]);
+    await this.linkOrderProducts(productsIds, insertId);
+
     return { userId, productsIds };
+  };
+
+  private linkOrderProducts = async (productsIds: number[], orderId: number) => {
+    const products = await this.productsModel.getAll();
+    const orderProducts: AllProducts[] = [];
+
+    productsIds
+      .forEach((productId) => {
+        const idProducts = products.filter((product) => product.id === productId);
+        orderProducts.push(...idProducts);
+      });
+
+    const linkOrderProducts = orderProducts
+      .map(({ id, name, amount }) => this.productsModel.update(id, name, amount, orderId));
+
+    await Promise.all(linkOrderProducts);
   };
 }
