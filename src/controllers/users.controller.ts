@@ -4,6 +4,7 @@ import UsersService from '../services/users.service';
 export default class UsersController {
   private service = new UsersService();
 
+  // ========================= CREATE ============================
   public create = async (req: Request, _res: Response, next: NextFunction): 
   Promise<void | Response> => {
     const { username, classe, level, password } = req.body;

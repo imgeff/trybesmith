@@ -12,6 +12,7 @@ const ordersQuery = {
 export default class OrdersModel {
   private productsModel = new ProductsModel();
 
+  // ========================= GET ALL ============================
   public getAll = async (): Promise<AllOrders[]> => {
     const allProducts = await this.productsModel.getAll();
     const [orders] = await connection.execute<RowDataPacket[]>(ordersQuery.getAll, []);
@@ -27,6 +28,7 @@ export default class OrdersModel {
     return orders as AllOrders[];
   };
 
+  // ========================= CREATE ============================
   public create = async ({ userId, productsIds }: NewOrder): Promise<NewOrder> => {
     const [{ insertId }] = await connection.execute<ResultSetHeader>(ordersQuery.create, [userId]);
     await this.linkOrderProducts(productsIds, insertId);
@@ -34,6 +36,7 @@ export default class OrdersModel {
     return { userId, productsIds };
   };
 
+  // ========================= LINK ORDER PRODUCTS ============================
   private linkOrderProducts = async (productsIds: number[], orderId: number) => {
     const products = await this.productsModel.getAll();
     const orderProducts: AllProducts[] = [];

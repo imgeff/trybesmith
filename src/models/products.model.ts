@@ -9,17 +9,20 @@ const productsQuery: ProductsQuery = {
 };
 
 export default class ProductsModel {
+  // ========================= GET ALL ============================
   public getAll = async (): Promise<AllProducts[]> => {
     const [products] = await connection.execute(productsQuery.getAll);
     return products as AllProducts[];
   };
 
+  // ========================= CREATE ============================
   public create = async (name: string, amount: string): Promise<NewProduct> => {
     const [{ insertId }] = await connection
       .execute<ResultSetHeader>(productsQuery.create, [name, amount]);
     return { id: insertId, name, amount };
   };
 
+  // ========================= UPDATE ============================
   public update = async (id: number, name: string, amount: string, orderId: number) => {
     await connection.execute(productsQuery.update, [name, amount, orderId, id]);
   };

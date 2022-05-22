@@ -8,6 +8,7 @@ const route = Router();
 const token = new Token();
 const controller = new LoginController();
 
+// ========================= POST ============================
 route.post('/', joiValidate(login), controller.isUser, token.generate);
 
 export default route;

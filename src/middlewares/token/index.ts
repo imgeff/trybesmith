@@ -10,6 +10,7 @@ const jwtConfig = {
 export default class Token {
   private secret = process.env.SECRET || 'Trybesmith*';
 
+  // ========================= GENERATE ============================
   public generate = (req: Request, res: Response): Response => {
     const { code, payload } = req.body;
     const token = jwt.sign(payload, this.secret, jwtConfig as SignOptions);
@@ -17,6 +18,7 @@ export default class Token {
     return res.status(code).json({ token });
   };
 
+  // ========================= VERIFY ============================
   public verify = (req: Request, res: Response, next: NextFunction): Response | void => {
     try {
       const { authorization } = req.headers;

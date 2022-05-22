@@ -7,6 +7,7 @@ const usersQuery = {
 };
 
 export default class UsersModel {
+  // ========================= CREATE ============================
   public create = async ({ username, classe, level, password }: NewUser): Promise<number> => {
     const [rows] = await connection
       .execute<ResultSetHeader>(usersQuery.create, [username, classe, level, password]);
