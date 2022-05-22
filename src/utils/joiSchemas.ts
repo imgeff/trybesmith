@@ -19,5 +19,7 @@ export const login = Joi.object({
 
 export const orders = Joi.object({
   userId: Joi.number(),
-  productsIds: Joi.array().min(1).required(),
+  productsIds: Joi.array().min(1).required().messages({
+    'array.min': '"productsIds" must include only numbers',
+  }),
 });
