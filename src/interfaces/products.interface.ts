@@ -10,7 +10,6 @@ export interface AllProducts extends NewProduct {
 
 export interface ProductsQuery {
   getAll: string;
-  getByOrder: string;
   create: string;
   createById: string;
 }
